@@ -5,7 +5,7 @@ instala las dependencias y configura automaticamente tanto el Servidor MCP
 como todas las Skills de Power BI en Claude Desktop y Claude Code.
 
 Uso rapido en 1 sola linea desde PowerShell (Windows):
-    irm https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/setup_claude.py | python -
+    irm https://raw.githubusercontent.com/K-834/mcp-cenco/main/setup_claude.py | python -
 
 O descargando el archivo y haciendo doble clic / ejecutando:
     python setup_claude.py
