@@ -1,0 +1,35 @@
+table Actualizacion
+	lineageTag: f962eb6e-b04a-4c8c-ba3a-81d7637267e9
+
+	measure 'Ultima actualización' = MAX(Actualizacion[Fecha])
+		formatString: General Date
+		lineageTag: ab8296f6-4563-402b-bffe-71a22c28130c
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: aedf5da2-2f53-4636-a2d6-f1dfbc02288f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fecha = NOW()
+		formatString: General Date
+		lineageTag: 289657c6-a8b9-40d9-91cf-5c15c18e9016
+		summarizeBy: none
+
+		variation Variación
+			isDefault
+			relationship: 683671d3-1065-4651-9e5e-c539e8ddf8de
+			defaultHierarchy: LocalDateTable_f67b9dc5-8a6a-4276-a352-a016e74396b8.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Actualizacion = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = c8496e62eda047429d7e49944063a6b4
+

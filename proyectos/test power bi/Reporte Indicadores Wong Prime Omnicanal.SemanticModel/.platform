@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Reporte Indicadores Wong Prime Semana - Mes"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "a9f979ac-d59c-4111-a91f-04f8b7b5498a"
+  }
+}

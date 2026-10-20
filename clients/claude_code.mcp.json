@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "powerbi-mcp": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "C:/Users/AKRAMOST/Documents/Proyectos_beta/powerbi-mcp-agent",
+        "powerbi-mcp"
+      ],
+      "env": {}
+    }
+  }
+}

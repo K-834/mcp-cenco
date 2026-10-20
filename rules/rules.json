@@ -1,0 +1,865 @@
+{
+  "version": "1.0",
+  "generated_from": "C:\\Users\\AKRAMOST\\Documents\\Proyectos_beta\\powerbi-mcp-agent\\docs\\reglas-mcp\\Checklist de Buenas Prácticas Power BI 1.1 7 (1).pdf",
+  "rules_count": 36,
+  "rules": [
+    {
+      "title": "Eliminar columnas duplicadas o sin uso en el modelo",
+      "description": "No deben existir columnas duplicadas o sin uso dentro del modelo de datos, ya que incrementan el tamano del modelo, consumen memoria y generan ambiguedad en medidas y relaciones. Reduce ademas la confusion del usuario final al ver campos redundantes.",
+      "category": "modelo_datos",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar las columnas de cada tabla en el TMDL/JSON del modelo y comparar con las referencias en medidas, visuales y relaciones para detectar columnas huerfanas o duplicadas.",
+      "rationale": "Columnas duplicadas o no usadas consumen memoria RAM y dificultan el mantenimiento y la claridad del modelo.",
+      "scope": [
+        "tables",
+        "columns"
+      ],
+      "keywords": [
+        "columna duplicada",
+        "columna sin uso",
+        "unused column",
+        "duplicate",
+        "TMDL"
+      ],
+      "example_violation": "Una tabla 'Ventas' tiene 'Importe', 'Monto' y 'TotalImporte' con la misma expresion DAX de calculo, donde dos de ellas nunca se usan en medidas ni visuales.",
+      "source_chunk": "Duplicidad e ineficiencia de elementos - No tener columnas duplicadas o sin uso en el modelo - Obligatorio - MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-001"
+    },
+    {
+      "title": "Usar tipos de datos correctos en campos numericos y de fecha",
+      "description": "Evitar el uso del tipo de dato Texto (String) en columnas que representan valores numericos o fechas. El tipo texto impide agregaciones eficientes, ocupa mas espacio y bloquea funciones DAX de inteligencia de tiempo.",
+      "category": "nomenclatura",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Inspeccionar la propiedad dataType de cada columna en TMDL/JSON y validar que columnas de fechas y numeros no sean de tipo String.",
+      "rationale": "Tipos incorrectos como texto en numeros o fechas degradan el rendimiento y rompen agregaciones y funciones de time intelligence.",
+      "scope": [
+        "columns"
+      ],
+      "keywords": [
+        "dataType",
+        "String",
+        "Integer",
+        "DateTime",
+        "tipo de dato",
+        "data type"
+      ],
+      "example_violation": "La columna 'FechaPedido' esta definida como dataType String en lugar de DateTime, y 'PrecioUnitario' es texto en vez de Decimal.",
+      "source_chunk": "Uso de tipos de datos correcto - Evitar el uso de tipo texto en campos numericos o de fecha. - Obligatorio - MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-002"
+    },
+    {
+      "title": "Evitar relaciones entre columnas de alta cardinalidad",
+      "description": "No deben usarse columnas con granularidad muy fina (por ejemplo, timestamp con hora-minuto-segundo) como clave en relaciones, ya que generan cardinalidad extrema, relaciones ineficientes y mayor consumo de memoria.",
+      "category": "modelo_datos",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar las relaciones en TMDL y analizar la cardinalidad (distinctCount) de las columnas involved en fromCardinality/toCardinality y detectar claves tipo timestamp.",
+      "rationale": "Las relaciones sobre columnas de alta cardinalidad degradan gravemente el rendimiento del motor y disparan el consumo de memoria.",
+      "scope": [
+        "relationships",
+        "columns"
+      ],
+      "keywords": [
+        "cardinalidad",
+        "relationship",
+        "timestamp",
+        "granularidad",
+        "distinctCount"
+      ],
+      "example_violation": "Relacion 1:* entre 'Ventas'[FechaHoraCompleta] (timestamp al segundo) y 'Calendario'[FechaHoraCompleta] con millones de valores unicos.",
+      "source_chunk": "Evitar relacion entre columnas de alta cardinalidad - No utilizar campos de alta granularidad en relaciones (ejemplo: timestamp) - Obligatorio - MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-003"
+    },
+    {
+      "title": "Usar esquema en estrella en lugar de copo de nieve",
+      "description": "Evitar esquemas Snowflake donde las dimensiones se conectan en cadena entre si; se debe preferir un esquema en Estrella donde todas las dimensiones se relacionan solo con la tabla de hechos. Esto mejora el rendimiento de consulta.",
+      "category": "modelo_datos",
+      "severity": "alta",
+      "check_type": "llm",
+      "detection": "Analizar el grafo de relaciones en TMDL y detectar cadenas de relacion dimension-a-dimension en lugar de todas las dimensiones conectadas directamente a la fact table.",
+      "rationale": "El esquema estrella minimiza joins, mejora la propagacion de filtros y reduce la complejidad del plan de consulta.",
+      "scope": [
+        "relationships",
+        "tables"
+      ],
+      "keywords": [
+        "star schema",
+        "snowflake",
+        "esquema estrella",
+        "relacion",
+        "fact table",
+        "dimension"
+      ],
+      "example_violation": "Relacion Producto -> Subcategoria -> Categoria encadenadas, cuando Categoria y Subcategoria deberian ser columnas dentro de la dimension Producto conectadas directo a Ventas.",
+      "source_chunk": "Usar un esquema en estrella en lugar de un esquema copo de nieve - Evitar el uso de esquemas Snowflake que sacrifican performance en pro de consistencia - Obligatorio - HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-004"
+    },
+    {
+      "title": "Ocultar campos no utilizados en la vista de informe",
+      "description": "Toda columna que no se utilice en ninguna visualizacion, filtro o slicer debe marcarse como oculta en la vista de informe, para reducir ruido visual, mejorar la experiencia del usuario y proteger campos sensibles.",
+      "category": "reporte_visual",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar la propiedad isHidden o la presencia en el panel de campos en TMDL/JSON y compararla con las columnas efectivamente referenciadas por visuales y filtros.",
+      "rationale": "Ocultar columnas no usadas limpia el panel de campos, evita arrastres accidentales y mejora la claridad para el usuario final.",
+      "scope": [
+        "columns"
+      ],
+      "keywords": [
+        "isHidden",
+        "HideFromReportView",
+        "ocultar",
+        "columna visible",
+        "campo oculto"
+      ],
+      "example_violation": "La tabla 'Cliente' tiene 30 columnas visibles pero solo 5 se usan en reportes; las otras 25 deberian estar marcadas como IsHidden = true.",
+      "source_chunk": "Ocultar campos no utilizados en la vista de informe - Todo campo que no se use en una visualizacion debe estar oculto - Obligatorio - HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-005"
+    },
+    {
+      "title": "Preferir medidas sobre columnas calculadas cuando sea posible",
+      "description": "Priorizar el uso de medidas DAX, que se calculan en tiempo de consulta segun el contexto de filtro, por sobre columnas calculadas que se materializan al refrescar el modelo y consumen espacio adicional.",
+      "category": "medidas_dax",
+      "severity": "baja",
+      "check_type": "automatico",
+      "detection": "Revisar en TMDL las columnas con propiedad isCalculated = true (calculated columns) y evaluar si la expresion podria convertirse en medida sin perder performance de agregacion.",
+      "rationale": "Las medidas se computan on-demand y son mas más ligeras; las columnas calculadas se almacenan y refrescan con el modelo.",
+      "scope": [
+        "measures",
+        "columns"
+      ],
+      "keywords": [
+        "calculated column",
+        "medida",
+        "measure",
+        "isCalculated",
+        "columna calculada"
+      ],
+      "example_violation": "Columna calculada 'Margen' = [Ingresos]-[Costos] en la tabla Ventas, cuando deberia ser una medida DAX para evitar duplicar datos en memoria.",
+      "source_chunk": "Usar medidas en lugar de columnas calculadas siempre que sea posible - Priorizar el uso de medidas que se computan en tiempo real - Opcional",
+      "compiled_by": "llm",
+      "id": "PBICHK-006"
+    },
+    {
+      "title": "Desactivar la opción de fecha/hora automática",
+      "description": "Evitar la creación de tablas de tiempo ocultas que se generan automáticamente al activar la opción de fecha/hora automática, ya que degradan el rendimiento del modelo.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar la propiedad autoDateTime en el archivo model.tmdl del modelo.",
+      "rationale": "Las tablas de tiempo automáticas consumen memoria RAM de forma innecesaria y rara vez se utilizan en producción.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "autoDateTime",
+        "fecha automática",
+        "date table",
+        "tabla oculta",
+        "performance"
+      ],
+      "example_violation": "Modelo con autoDateTime=true habilitado, creando tablas ocultas por cada columna de fecha existente.",
+      "source_chunk": "Performance Desactivar la opción de fecha/hora automática Evitar la creación de tabla de tiempo ocultas que degradan el performance Obligatorio MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-007"
+    },
+    {
+      "title": "Reducir la precisión de columnas numéricas",
+      "description": "Evitar el uso de precisiones (número de decimales o longitud) mayores a las efectivamente utilizadas en las columnas del modelo, optimizando el almacenamiento y la compresión.",
+      "category": "modelo_datos",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar la propiedad dataType y precisión de columnas en TMDL para detectar tipos más amplios de lo necesario.",
+      "rationale": "Mayor precisión consume más memoria sin aportar valor real cuando los valores no requieren tantos dígitos.",
+      "scope": [
+        "columns"
+      ],
+      "keywords": [
+        "dataType",
+        "decimal",
+        "precisión",
+        "tipo de dato",
+        "numeric"
+      ],
+      "example_violation": "Columna de precio unitario definida como Decimal con 15 dígitos cuando solo se requieren 2 decimales.",
+      "source_chunk": "Performance Reducir la precisión de columnas Evitar el uso de precisiones mayores a la efectivamente utilizadas Obligatorio MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-008"
+    },
+    {
+      "title": "Implementar agregaciones para modelos masivos",
+      "description": "Utilizar tablas agregadas cuando los resultados no requieran detalle o cuando los modelos sean masivos, para reducir el volumen de datos escaneados por consulta.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar la existencia de tablas con AggregationFlag o SummarizationKind en el modelo TMDL.",
+      "rationale": "Las agregaciones permiten que el motor responda consultas sin escanear toda la tabla de detalle, mejorando drásticamente el rendimiento.",
+      "scope": [
+        "tables"
+      ],
+      "keywords": [
+        "aggregation",
+        "agregaciones",
+        "SummarizationKind",
+        "tabla agregada",
+        "performance"
+      ],
+      "example_violation": "Modelo con tabla de hechos de millones de transacciones y sin ninguna tabla de agregación configurada para reportes resumen.",
+      "source_chunk": "Performance Implementar agregaciones Utilizar tabla agregadas para cuando los resultados no utilicen detalle o los modelos sean masivos Obligatorio HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-009"
+    },
+    {
+      "title": "Minimizar el uso de Row Level Security (RLS)",
+      "description": "Solo implementar RLS cuando el reporte lo requiera efectivamente, evitando añadir complejidad y overhead innecesario en los modelos que no necesitan filtrado por usuario.",
+      "category": "seguridad",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar la presencia de definiciones de roles y expresiones RLS en el archivo model.tmdl del modelo.",
+      "rationale": "El RLS añade complejidad al modelo y puede afectar negativamente el rendimiento de las consultas DAX.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "RLS",
+        "row level security",
+        "roles",
+        "seguridad",
+        "filter expression"
+      ],
+      "example_violation": "Modelo con múltiples roles RLS definidos cuando todos los usuarios consumen el mismo nivel de datos.",
+      "source_chunk": "Performance Minimizar el uso de RLS Solo implementar RLS cuando el reporte lo requiera Obligatorio MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-010"
+    },
+    {
+      "title": "Acotar el propósito del modelo al reporte particular",
+      "description": "Un modelo con datos a nivel detalle no debe ser utilizado para alimentar únicamente una visualización con una agregación superior; el alcance del modelo debe corresponderse con su uso real.",
+      "category": "modelo_datos",
+      "severity": "alta",
+      "check_type": "llm",
+      "detection": "Evaluar manualmente si la granularidad de las tablas del modelo es coherente con el nivel de agregación de los visuales del reporte.",
+      "rationale": "Modelos sobredimensionados o mal orientados generan confusión, problemas de mantenimiento y consumo innecesario de recursos.",
+      "scope": [
+        "dataset",
+        "tables"
+      ],
+      "keywords": [
+        "granularidad",
+        "nivel detalle",
+        "propósito",
+        "alcance",
+        "modelo semántico"
+      ],
+      "example_violation": "Modelo con tabla transaccional a nivel de línea usado solo para mostrar totales mensuales agregados en el reporte.",
+      "source_chunk": "Usabilidad El propósito del modelo DEBE ser acotado al reporte particular Un modelo con datos a nivel detalle no debe ser utilizado para alimentar una visualización con una agregación superior Obligatorio MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-011"
+    },
+    {
+      "title": "No combinar múltiples modelos semánticos en un solo reporte",
+      "description": "No aplicar múltiples modelos semánticos de Power BI en un solo reporte, dado el alto consumo de transacciones XMLA que esto genera.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar el número de datasets/modelos referenciados en el archivo PBIX o pbip project.",
+      "rationale": "Múltiples modelos en un mismo reporte disparan transacciones XMLA costosas que degradan el rendimiento general.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "XMLA",
+        "modelos semánticos",
+        "composite model",
+        "multiples datasets",
+        "Service"
+      ],
+      "example_violation": "Reporte Power BI conectado simultáneamente a 5 modelos semánticos distintos para combinar información.",
+      "source_chunk": "Service No utilizar modelos complejos No aplicar múltiples modelos semánticos de Power BI en un solo reporte dado el consumo de las transacciones XMLA Obligatorio MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-012"
+    },
+    {
+      "title": "Trasladar cómputo al motor de origen del dato",
+      "description": "Realizar las transformaciones directamente en la fuente de datos o consumir datos ya preparados, evitando mover cálculos pesados al lado de Power BI para reducir la carga de procesamiento en el modelo.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "llm",
+      "detection": "Revisar las consultas de Power Query (queries en TMDL/model.bim) y verificar que las transformaciones se deleguen al origen SQL.",
+      "rationale": "Delegar el cómputo al motor de origen reduce tiempos de carga y aprovecha índices y optimizadores nativos.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "query",
+        "folding",
+        "source",
+        "transform",
+        "PowerQuery",
+        "native"
+      ],
+      "example_violation": "Aplicar múltiples pasos de Merge/Append en Power Query sobre millones de filas en lugar de resolverlos con un JOIN en SQL.",
+      "source_chunk": "Performance Trasladar computo al motor de origen del dato - Realizar transformaciones directamente en la fuente de datos o consumir datos preparados - Obligatorio - HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-013"
+    },
+    {
+      "title": "Minimizar el uso de orígenes de datos dinámicos",
+      "description": "Evitar orígenes de datos que cambien con frecuencia o que dependan de conexiones volátiles, por ejemplo archivos en la web o Excel en SharePoint, ya que pueden afectar la estabilidad y el rendimiento de las cargas.",
+      "category": "rendimiento",
+      "severity": "baja",
+      "check_type": "automatico",
+      "detection": "Inspeccionar las fuentes en model.bim (dataSources) y detectar conexiones a Web.Contents o SharePoint.Files sin parametrización estable.",
+      "rationale": "Los orígenes dinámicos generan fallos de actualización y mayor latencia por la necesidad de revalidar el esquema cada vez.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "Web.Contents",
+        "SharePoint",
+        "Excel",
+        "dynamic",
+        "source"
+      ],
+      "example_violation": "Conectar un archivo Excel desde SharePoint como origen principal de un dataset que se actualiza varias veces al día.",
+      "source_chunk": "Performance Minimizar el uso de orígenes de datos dinámicos - Ejemplo, archivos en la web o Excel en SharePoint - Opcional",
+      "compiled_by": "llm",
+      "id": "PBICHK-014"
+    },
+    {
+      "title": "Minimizar pasos y funciones M complejas",
+      "description": "Evitar consultas con un número elevado de pasos en Power Query y, especialmente, funciones M personalizadas de alta complejidad, ya que impactan directamente en los tiempos de refresh.",
+      "category": "rendimiento",
+      "severity": "baja",
+      "check_type": "llm",
+      "detection": "Revisar cada consulta M y contar pasos y funciones personalizadas; alertar cuando superan un umbral razonable.",
+      "rationale": "Consultas M extensas y funciones anidadas son costosas de evaluar y difíciles de mantener y depurar.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "PowerQuery",
+        "M",
+        "steps",
+        "custom function",
+        "complexity"
+      ],
+      "example_violation": "Una consulta M con 80 pasos y 5 funciones recursivas que podría resolverse con un GROUP BY en SQL.",
+      "source_chunk": "Performance Minimizar el número de pasos y evitar funciones M complejas - Evitar funciones M personalizadas de alta complejidad - Opcional",
+      "compiled_by": "llm",
+      "id": "PBICHK-015"
+    },
+    {
+      "title": "Deshabilitar actualización para tablas estáticas",
+      "description": "Desactivar la opción 'Incluir en la actualización del informe' para las tablas cuyo contenido no cambia entre refreshes, reduciendo el trabajo innecesario del servicio de Power BI.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar la propiedad 'isHidden' y los flags de refresh en la partición/model.bim para identificar tablas marcadas como no refrescables.",
+      "rationale": "Saltar tablas estáticas en el refresh disminuye la duración y el riesgo de fallos de actualización.",
+      "scope": [
+        "tables"
+      ],
+      "keywords": [
+        "refresh",
+        "static",
+        "partition",
+        "policy",
+        "table"
+      ],
+      "example_violation": "Una tabla de países o catálogo que se vuelve a cargar en cada refresh pese a no cambiar nunca.",
+      "source_chunk": "Performance Deshabilitar actualización para tablas estáticas - Desactivar la opción Incluir en la actualización del informe para tablas estáticas - Obligatorio - HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-016"
+    },
+    {
+      "title": "Preferir Query Folding con consultas nativas",
+      "description": "Habilitar Query Folding al conectar con bases de datos relacionales, de modo que Power Query envíe consultas nativas (SQL) al origen en lugar de transformar los datos localmente.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar en Power Query que las transformaciones mantienen el plegado (icono 'View Native Query') y revisar el log de diagnóstico.",
+      "rationale": "El plegado aprovecha el optimizador del motor SQL, reduce el volumen de datos transferidos y mejora el rendimiento del refresh.",
+      "scope": [
+        "dataset",
+        "tables"
+      ],
+      "keywords": [
+        "query folding",
+        "native query",
+        "SQL",
+        "PowerQuery",
+        "fold"
+      ],
+      "example_violation": "Insertar pasos M con Table.SelectRows que rompen el plegado y fuerzan la descarga completa de la tabla.",
+      "source_chunk": "Performance Preferir consulta al origen usando Folding - Nativas - Usar consultas nativas en Power Query al conectar con bases de datos habilitando Query Folding - Obligatorio - HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-017"
+    },
+    {
+      "title": "Preferir DirectQuery para trasladar cómputo al origen",
+      "description": "Priorizar el modo DirectQuery con SQL nativo en lugar de Import con conversiones locales en Power Query, trasladando así el procesamiento al motor de la base de datos.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar el modo de almacenamiento (mode: import/directQuery) en cada partición TMDL y la presencia de transformaciones M no plegables.",
+      "rationale": "DirectQuery delega el cómputo a la base de datos y reduce el uso de memoria y CPU del modelo en Power BI.",
+      "scope": [
+        "tables",
+        "dataset"
+      ],
+      "keywords": [
+        "DirectQuery",
+        "SQL",
+        "storage mode",
+        "import",
+        "folding"
+      ],
+      "example_violation": "Importar y materializar en Power BI una tabla de hechos con millones de filas cuando podría consultarse en DirectQuery.",
+      "source_chunk": "Performance Preferencia uso de DirectQuery para trasladar computo al origen - Preferenciar SQL + DirectQuery en vez de conversiones locales en PowerQuery - Obligatorio - HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-018"
+    },
+    {
+      "title": "Usar modelos compuestos con relaciones Dual",
+      "description": "Para escenarios de acceso híbrido (Import + DirectQuery) configurar relaciones DirectQuery -> Dual para que el motor Vertipaq también pueda resolver consultas y mejorar la performance.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar la propiedad crossFilteringBehavior y el tipo de relación (singleDirection/both) en model.bim buscando relaciones Dual.",
+      "rationale": "Las relaciones Dual permiten que una tabla DirectQuery actúe como Import en ciertos contextos, evitando viajes innecesarios al origen.",
+      "scope": [
+        "relationships"
+      ],
+      "keywords": [
+        "composite model",
+        "Dual",
+        "DirectQuery",
+        "crossFiltering",
+        "relationship"
+      ],
+      "example_violation": "Mantener una relación DirectQuery en singleDirection cuando se podría configurar Dual sin afectar la semántica.",
+      "source_chunk": "Performance Para acceso hibrido usar modelos compuestos - Dar preferencia a relaciones DirectQuery->Dual para mejorar performance - Obligatorio - HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-019"
+    },
+    {
+      "title": "Limitar timeout de consultas a 30 minutos",
+      "description": "Las consultas al origen de datos no deben superar los 30 minutos de timeout estimado en ninguna herramienta. Esto garantiza que las operaciones se completen dentro de un tiempo razonable y evita bloqueos prolongados que degraden la experiencia del usuario.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar la propiedad de timeout configurada en el data source del dataset Power BI (tmdl/JSON).",
+      "rationale": "Evitar tiempos de espera excesivos que bloqueen recursos y degraden el rendimiento general del sistema.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "timeout",
+        "data source",
+        "query",
+        "30 minutos",
+        "performance",
+        "origen"
+      ],
+      "example_violation": "Data source configurado con un timeout superior a 30 minutos, por ejemplo 60 minutos, en parámetros de la fuente de datos.",
+      "source_chunk": "Performance | Consultas no pueden demorar en el origen mas de 30 minutos | Timeout estimado en todas las herramientas no supera los 30 minutos | Obligatorio | HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-020"
+    },
+    {
+      "title": "Curar queries con el administrador del origen de datos",
+      "description": "Todas las queries enviadas al origen deben estar validadas y aprobadas por el administrador del origen para garantizar que cumplan con el reglamento y las políticas de uso del origen de datos.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "llm",
+      "detection": "Confirmar mediante proceso de revisión con el DBA/administrador que las queries del modelo fueron validadas.",
+      "rationale": "Asegurar el cumplimiento de las políticas de uso, límites de concurrencia y buenas prácticas del origen de datos.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "data source",
+        "query",
+        "administrador",
+        "reglamento",
+        "validación",
+        "gobernanza"
+      ],
+      "example_violation": "Query compleja ejecutada directamente contra producción sin revisión del DBA del sistema origen.",
+      "source_chunk": "Performance | Consultas deben estar curadas por el administrador del origen | Asegurar que las queries cumplan con el reglamento del origen de los datos | Obligatorio | HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-021"
+    },
+    {
+      "title": "Evitar FILTER dentro de CALCULATE sin ser necesario",
+      "description": "No usar la función FILTER dentro de CALCULATE a menos que sea estrictamente indispensable. CALCULATE ya establece contexto de filtro y agregar FILTER suele generar evaluación fila a fila redundante que impacta el rendimiento.",
+      "category": "medidas_dax",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Buscar en TMDL/DAX patrones CALCULATE(..., FILTER(tabla, ...)) dentro de expresiones de medidas.",
+      "rationale": "FILTER dentro de CALCULATE itera fila a fila y omite optimizaciones del motor, degradando el rendimiento significativamente.",
+      "scope": [
+        "measures"
+      ],
+      "keywords": [
+        "FILTER",
+        "CALCULATE",
+        "DAX",
+        "filter context",
+        "iteración",
+        "filter"
+      ],
+      "example_violation": "CALCULATE(SUM(Sales[Amount]), FILTER(ALL(Sales), Sales[Year]=2024)) cuando bastaría con CALCULATE(SUM(Sales[Amount]), ALL(Sales[Year]), Sales[Year]=2024).",
+      "source_chunk": "Performance | Reducir uso de FILTER sin ser necesario | No usar FILTER dentro de CALCULATE a menos que sea estrictamente para la función | Obligatorio | MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-022"
+    },
+    {
+      "title": "Usar variables VAR para reutilizar cálculos en medidas DAX",
+      "description": "Utilizar variables (VAR) en las medidas DAX cuando un mismo cálculo se reutiliza varias veces. Esto evita recalcular la expresión, mejora el rendimiento y aumenta la legibilidad y mantenibilidad del código.",
+      "category": "medidas_dax",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Detectar medidas DAX con subexpresiones duplicadas o cálculos complejos repetidos que podrían extraerse a una variable VAR.",
+      "rationale": "Evita recomputaciones dentro de la misma medida y clarifica la intención de cada fragmento del cálculo.",
+      "scope": [
+        "measures"
+      ],
+      "keywords": [
+        "VAR",
+        "variable",
+        "RETURN",
+        "DAX",
+        "measure",
+        "reutilización",
+        "cálculo"
+      ],
+      "example_violation": "Medida que repite ([Total Sales] - [Total Cost]) en varias ramas del RETURN en lugar de VAR Margin = [Total Sales] - [Total Cost].",
+      "source_chunk": "Performance | Pre calcular resultados si se reutilizan en múltiples medidas | Utilizar variables (VAR) en las medidas para simplificar y mejorar el rendimiento | Obligatorio | MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-023"
+    },
+    {
+      "title": "Minimizar el uso de funciones iteradoras (X) en DAX",
+      "description": "Minimizar el uso de funciones iteradoras como SUMX, AVERAGEX, COUNTX, RANKX, MAXX y MINX cuando exista una alternativa con funciones de agregación directa que sea más eficiente para el motor.",
+      "category": "medidas_dax",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Buscar en TMDL/DAX funciones terminadas en X (SUMX, AVERAGEX, COUNTX, RANKX, MAXX, MINX) en la definición de medidas.",
+      "rationale": "Las funciones iteradoras evalúan fila a fila y son mucho más costosas que las agregaciones nativas optimizadas por el motor VertiPaq.",
+      "scope": [
+        "measures"
+      ],
+      "keywords": [
+        "SUMX",
+        "AVERAGEX",
+        "RANKX",
+        "COUNTX",
+        "MAXX",
+        "MINX",
+        "iterador"
+      ],
+      "example_violation": "SUMX(Sales, Sales[Qty]*Sales[Price]) cuando podría resolverse con SUM(Sales[Revenue]) si Revenue existe como columna.",
+      "source_chunk": "Performance | Evitar uso de funciones de iteración (X) | Minimizar el uso de funciones iteradoras (SUMX, AVERAGEX, RANKX, etc.) | Obligatorio | HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-024"
+    },
+    {
+      "title": "Evitar EARLIER y contexto de fila innecesario en medidas",
+      "description": "No usar EARLIER() ni EARLIEST() sin necesidad real. Las medidas operan en contexto de filtro; cuando se requiere contexto de fila conviene resolverlo con medidas, variables o relaciones del modelo en lugar de con EARLIER().",
+      "category": "medidas_dax",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Buscar uso de EARLIER() o EARLIEST() en las expresiones DAX de las medidas del modelo.",
+      "rationale": "EARLIER() genera dependencias circulares del contexto de fila y dificulta el mantenimiento; alternativas modernas son más legibles y eficientes.",
+      "scope": [
+        "measures"
+      ],
+      "keywords": [
+        "EARLIER",
+        "EARLIEST",
+        "row context",
+        "DAX",
+        "filter context",
+        "measure"
+      ],
+      "example_violation": "Medida con CALCULATE(SUM(...), FILTER(..., EARLIER(...))) simulando un join que podría resolverse con una relación en el modelo de datos.",
+      "source_chunk": "Performance | Evitar el contexto de fila en medidas | por ejemplo, no usar EARLIER() sin necesidad | Obligatorio | HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-025"
+    },
+    {
+      "title": "Limitar visualizaciones por pagina",
+      "description": "Respetar el maximo de 6 a 8 visualizaciones por pagina en reportes Power BI, sin considerar los filtros. Un numero mayor impacta negativamente en la experiencia del usuario y en el rendimiento del reporte, incrementando los tiempos de carga y dificultando la lectura. Aplica a reportes estandar; los reportes Onepage quedan exceptuados por su proposito de vista unica.",
+      "category": "reporte_visual",
+      "severity": "baja",
+      "check_type": "automatico",
+      "detection": "Contar el numero de objetos visuales por pagina en el JSON del reporte (.pbip) o TMDL del layout.",
+      "rationale": "El exceso de visuales degrada el rendimiento de carga y reduce la claridad del lienzo.",
+      "scope": [
+        "pages",
+        "visuals"
+      ],
+      "keywords": [
+        "visuals",
+        "page",
+        "layout",
+        "Onepage",
+        "performance",
+        "count"
+      ],
+      "example_violation": "Una pagina estandar de un reporte Power BI contiene 15 visualizaciones (graficos de barras, tablas y tarjetas) cuando deberia tener maximo 8.",
+      "source_chunk": "Respetar el maximo de 6 a 8 visualizaciones por pagina sin considerar filtros (excepto Onepage)",
+      "compiled_by": "llm",
+      "id": "PBICHK-026"
+    },
+    {
+      "title": "No usar paginas adicionales en reportes Onepage",
+      "description": "Los reportes clasificados como Onepage no pueden contener paginas adicionales navegables, salvo que correspondan a tooltips. Esto preserva el proposito de Onepage: presentar toda la informacion relevante consolidada en una sola vista.",
+      "category": "reporte_visual",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar el numero total de paginas y la marca de tipo Onepage en la metadata del reporte.",
+      "rationale": "Onepage exige una unica vista consolidada; paginas adicionales rompen su proposito de diseno.",
+      "scope": [
+        "pages"
+      ],
+      "keywords": [
+        "Onepage",
+        "pages",
+        "tooltips",
+        "page",
+        "layout"
+      ],
+      "example_violation": "Un reporte marcado como Onepage contiene tres paginas navegables adicionales al canvas principal con informacion complementaria.",
+      "source_chunk": "Reportes Onepage no pueden tener mas paginas salvo sean tooltips",
+      "compiled_by": "llm",
+      "id": "PBICHK-027"
+    },
+    {
+      "title": "Evitar sobrecargar paginas con filtros",
+      "description": "No saturar las paginas con multiples slicers y filtros directos. En su lugar, implementar marcadores (bookmarks) o paginas con desglose (drill-through) para mantener la claridad visual, mejorar el rendimiento del reporte y ofrecer una mejor experiencia de usuario.",
+      "category": "reporte_visual",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Contar slicers y filtros a nivel visual/pagina en el JSON del reporte y validar la existencia de bookmarks y drill-through configurados.",
+      "rationale": "El exceso de filtros incrementa tiempos de renderizado y reduce la claridad visual del reporte.",
+      "scope": [
+        "pages",
+        "visuals"
+      ],
+      "keywords": [
+        "filters",
+        "slicers",
+        "bookmarks",
+        "drill-through",
+        "page"
+      ],
+      "example_violation": "Una pagina contiene 8 slicers sincronizados y multiples filtros a nivel visual que saturan el lienzo y demoran la interaccion.",
+      "source_chunk": "Evitar sobrecargar pagina con filtros - Utilizar marcadores o paginas con desglose",
+      "compiled_by": "llm",
+      "id": "PBICHK-028"
+    },
+    {
+      "title": "Implementar actualizacion incremental",
+      "description": "Implementar politica de actualizacion incremental (incremental refresh) en conjuntos de datos grandes para reducir el tiempo y el consumo de recursos durante las cargas, conservando unicamente las ventanas de datos necesarias segun la politica definida (RollingWindow).",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar la propiedad refreshPolicy/IncrementalRefreshPolicy en el archivo TMDL o TMSL del dataset para detectar tablas con particion incremental.",
+      "rationale": "Refrescar todo el dataset completo es ineficiente; la carga incremental optimiza tiempos y uso de recursos.",
+      "scope": [
+        "dataset",
+        "tables"
+      ],
+      "keywords": [
+        "incremental refresh",
+        "refreshPolicy",
+        "partition",
+        "RollingWindow",
+        "TMSL",
+        "TMDL"
+      ],
+      "example_violation": "Un dataset de hechos con 500 millones de filas usa refresco completo diario en lugar de incremental con ventanas de 5 anos.",
+      "source_chunk": "Utilizar actualizacion incremental - Implementar actualizacion incremental para conjuntos de datos grandes",
+      "compiled_by": "llm",
+      "id": "PBICHK-029"
+    },
+    {
+      "title": "Conectar fuentes de datos via Gateway",
+      "description": "Preferir la configuracion de conexiones a fuentes de datos a traves de Gateway (on-premises data gateway) cuando sea posible, evitando conexiones directas que pueden generar fallos de autenticacion, latencia o cuellos de botella en el servicio Power BI.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar la propiedad gatewayId o datasourceReferences en el modelo de datos para confirmar el uso del Gateway.",
+      "rationale": "Gateway ofrece conectividad estable, segura y performante entre fuentes on-premises y el servicio Power BI.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "gateway",
+        "dataSource",
+        "connection",
+        "datasource",
+        "on-premises"
+      ],
+      "example_violation": "Un dataset corporativo consulta una base SQL Server on-premises sin Gateway configurado, generando errores intermitentes de refresh.",
+      "source_chunk": "Conectar via Gateway - Preferir la configuracion de conexiones via Gateway cuando sea posible",
+      "compiled_by": "llm",
+      "id": "PBICHK-030"
+    },
+    {
+      "title": "Habilitar cache de consultas",
+      "description": "Siempre habilitar el cache de consultas (query cache) en el dataset publicado en Power BI Service para reducir la latencia de las consultas DAX y mejorar la experiencia del usuario al navegar los reportes, reutilizando resultados previos.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Validar la propiedad queryCacheEnabled o QueryCachingMode en el archivo TMDL/JSON del dataset publicado.",
+      "rationale": "El cache de consultas reduce la latencia repetitiva en consultas DAX frecuentes sobre el mismo dataset.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "queryCache",
+        "cache",
+        "caching",
+        "query",
+        "service"
+      ],
+      "example_violation": "Un dataset publicado en Power BI Service tiene desactivada la opcion 'Allow query cache', generando latencia alta en visuales pesados.",
+      "source_chunk": "Habilitar cache de consultas - Siempre habilitar cache de consultas",
+      "compiled_by": "llm",
+      "id": "PBICHK-031"
+    },
+    {
+      "title": "Habilitar Large Semantic Model cuando el dataset es grande",
+      "description": "Si el archivo PBIX pesa más de 500 MB o utiliza actualización incremental, se debe configurar el dataset como Modelo Semántico Grande (LSM) para poder escalar más allá de los límites estándar de memoria y procesamiento.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar el tamaño del PBIX en el servicio Power BI y la configuración de 'Large model storage format' en la definición del dataset.",
+      "rationale": "Los datasets grandes o con refresco incremental agotan la memoria del motor Vertipaq y degradan el rendimiento si no se usa formato LSM.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "LSM",
+        "Large Semantic Model",
+        "large model",
+        "incremental refresh",
+        "PBIX size",
+        "500MB",
+        "Vertipaq"
+      ],
+      "example_violation": "Dataset de 1.2 GB con actualización incremental activado sigue usando el formato de almacenamiento estándar en lugar de Large Semantic Model.",
+      "source_chunk": "Performance | Habilitar LSM de ser necesario | Si el PBIX tiene un peso superior a 500 Mbs o utiliza actualización incremental, habilitar como Modelo semántico grande | Obligatorio | MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-032"
+    },
+    {
+      "title": "Habilitar escalabilidad horizontal en modelos semánticos grandes",
+      "description": "Cuando un dataset es un Modelo Semántico Grande (LSM) se debe habilitar la escalabilidad horizontal (read-only replicas) para distribuir la carga de consultas entre múltiples nodos del motor.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Verificar en la configuración del dataset LSM que la opción 'Scale out' o read-only replicas está habilitada mediante el endpoint XMLA.",
+      "rationale": "Sin escalabilidad horizontal, todas las consultas compiten por el mismo nodo y los tiempos de respuesta se degradan bajo carga.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "scale out",
+        "escalabilidad horizontal",
+        "read-only replicas",
+        "LSM",
+        "XMLA endpoint",
+        "Power BI Premium"
+      ],
+      "example_violation": "Dataset configurado como LSM con más de 100 usuarios concurrentes pero sin réplicas de lectura habilitadas.",
+      "source_chunk": "Performance | Habilitar escalabilidad horizontal | Si es un LSM, habilitar escalabilidad horizontal | Obligatorio | HiPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-033"
+    },
+    {
+      "title": "Alojar artefactos relacionados en carpetas por ámbito de negocio",
+      "description": "Cuando existan múltiples artefactos (informes, datasets, dataflows) correspondientes a un mismo ámbito de negocio (por ejemplo Ventas o Inventarios), estos deben organizarse en carpetas dentro del workspace.",
+      "category": "nomenclatura",
+      "severity": "baja",
+      "check_type": "automatico",
+      "detection": "Listar los artefactos del workspace vía Power BI REST API y comprobar que estén agrupados bajo una carpeta cuyo nombre coincida con un ámbito de negocio.",
+      "rationale": "La agrupación por ámbito facilita el descubrimiento, gobernanza y asignación de permisos a grupos de usuarios del mismo dominio funcional.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "workspace folders",
+        "carpetas",
+        "ámbito de negocio",
+        "organización",
+        "governance",
+        "inventarios",
+        "ventas"
+      ],
+      "example_violation": "El workspace contiene 12 informes de ventas dispersos en la raíz sin agrupar bajo una carpeta 'Ventas'.",
+      "source_chunk": "Estandarización | Ordenar en carpetas | Si existe mas de un artefacto relacionado a un ámbito especifico (ej. Ventas, Inventarios) se deben alojar en carpetas | Opcional | -",
+      "compiled_by": "llm",
+      "id": "PBICHK-034"
+    },
+    {
+      "title": "Programar actualizaciones en horarios de baja demanda",
+      "description": "La programación de actualizaciones del dataset debe coordinarse con el equipo de Operaciones de Datos para identificar la ventana horaria de menor demanda y minimizar el impacto sobre los usuarios.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "llm",
+      "detection": "Revisar la configuración del schedule de refresh en el servicio Power BI y contrastarla con el calendario acordado por Operaciones de Datos.",
+      "rationale": "Actualizar en horas pico genera contención de recursos y tiempos de espera elevados para los usuarios que consultan el modelo.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "refresh schedule",
+        "programación",
+        "ventana de mantenimiento",
+        "operaciones de datos",
+        "low-demand hours",
+        "dataset refresh"
+      ],
+      "example_violation": "Refresh programado a las 10:00 AM hora laboral sin coordinación con Operaciones de Datos, afectando a los usuarios de negocio.",
+      "source_chunk": "Performance | Programar actualizaciones en horario de baja demanda | Coordinar con Operaciones de Datos para identificar el horario ideal | Obligatorio | MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-035"
+    },
+    {
+      "title": "Evitar frecuencias de actualización innecesariamente altas",
+      "description": "No se deben programar actualizaciones con alta frecuencia (por ejemplo cada 15 o 30 minutos) si la naturaleza del reporte o los datos no lo justifican, ya que consumen recursos del servicio y de los orígenes.",
+      "category": "rendimiento",
+      "severity": "alta",
+      "check_type": "automatico",
+      "detection": "Revisar la frecuencia configurada en la programación de refresh del dataset y compararla con la frecuencia real de cambio de los datos fuente.",
+      "rationale": "Refrescos frecuentes y no justificados saturan el gateway, los orígenes de datos y los pipelines, sin aportar valor al usuario final.",
+      "scope": [
+        "dataset"
+      ],
+      "keywords": [
+        "refresh frequency",
+        "frecuencia de actualización",
+        "gateway",
+        "scheduled refresh",
+        "over-refresh",
+        "high frequency"
+      ],
+      "example_violation": "Dataset cuyo origen se actualiza una vez al día configurado con refresh cada 15 minutos, ejecutando 96 refrescos innecesarios.",
+      "source_chunk": "Performance | Evitar frecuencias de actualización innecesarias | No fijar actualizaciones con alta frecuencia si el reporte no lo justifica | Obligatorio | MidPerf",
+      "compiled_by": "llm",
+      "id": "PBICHK-036"
+    }
+  ]
+}

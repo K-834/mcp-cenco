@@ -1,0 +1,14 @@
+{
+  "servers": {
+    "powerbi-mcp": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "C:/Users/AKRAMOST/Documents/Proyectos_beta/powerbi-mcp-agent",
+        "powerbi-mcp"
+      ]
+    }
+  }
+}

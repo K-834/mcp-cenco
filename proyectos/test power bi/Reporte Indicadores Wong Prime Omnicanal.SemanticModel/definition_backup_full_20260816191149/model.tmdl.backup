@@ -1,0 +1,32 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-PE
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["prime_indicadores_semana_grupos","prime_indicadores_semana_total","prime_indicadores_mes_grupos","prime_indicadores_mes_total","promocional_semana","promocional_mes"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table prime_indicadores_semana_grupos
+ref table prime_indicadores_semana_total
+ref table prime_indicadores_mes_grupos
+ref table prime_indicadores_mes_total
+ref table Indicadores_prime
+ref table Medidas
+ref table Indicadores_no_prime
+ref table Indicadores_totales
+ref table promocional_semana
+ref table promocional_mes
+ref table Selector_Métrica
+ref table Actualizacion
+ref table DateTableTemplate_14581265-f8fe-48cb-86cf-31d456daff5f
+ref table LocalDateTable_f67b9dc5-8a6a-4276-a352-a016e74396b8
+ref table Canal
+
+ref cultureInfo es-ES
+

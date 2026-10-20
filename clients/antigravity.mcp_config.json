@@ -1,0 +1,15 @@
+{
+  "_comment": "Configuracion para Antigravity. Revisa la documentacion del cliente para confirmar la ruta esperada del archivo de configuracion MCP. Usa el entry point `powerbi-mcp` declarado en pyproject.toml para evitar problemas de cwd.",
+  "mcpServers": {
+    "powerbi-mcp": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "C:/Users/AKRAMOST/Documents/Proyectos_beta/powerbi-mcp-agent",
+        "powerbi-mcp"
+      ],
+      "transport": "stdio"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+table Indicadores_totales
+	lineageTag: 4cb56f1b-f9fa-4fb6-9ab9-eef5dc937661
+
+	column Etiqueta
+		lineageTag: 60faff83-041f-445d-93c6-fa791c555cc2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Etiqueta]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Indicadores_totales = calculated
+		mode: import
+		source = ```
+				DATATABLE(
+				    "Etiqueta", STRING,
+				    {
+				        {"1- Vta Neta (MM$)"},
+				        {"2- N Transacciones"},
+				        {"3- N Clientes"},
+				        {"4- Gasto Promedio Bruto"},
+				        {"5- Frecuencia"},
+				        {"6- Ticket Promedio Bruto"}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 98a642fb171d4d069cdc7d2cbbe9a535
+

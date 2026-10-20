@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PowerBI Best Practices Rules",
+  "type": "object",
+  "required": [
+    "rules"
+  ],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "generated_from": {
+      "type": "string"
+    },
+    "rules_count": {
+      "type": "integer"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "title",
+          "description",
+          "severity",
+          "check_type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^(BP|PBICHK)-[0-9]{3,}$"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "modelo_datos",
+              "medidas_dax",
+              "reporte_visual",
+              "rendimiento",
+              "nomenclatura",
+              "seguridad",
+              "documentacion"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 5
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baja"
+            ]
+          },
+          "check_type": {
+            "type": "string",
+            "enum": [
+              "automatico",
+              "llm"
+            ]
+          },
+          "detection": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "tables",
+                "columns",
+                "measures",
+                "relationships",
+                "pages",
+                "visuals",
+                "dataset"
+              ]
+            }
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 10
+          },
+          "example_violation": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "source_chunk": {
+            "type": "string"
+          },
+          "compiled_by": {
+            "type": "string",
+            "enum": [
+              "llm",
+              "regex"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

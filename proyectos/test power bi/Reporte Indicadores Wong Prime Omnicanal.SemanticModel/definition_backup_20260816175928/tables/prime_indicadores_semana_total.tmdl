@@ -1,0 +1,158 @@
+table prime_indicadores_semana_total
+	lineageTag: cb6c5322-8685-4feb-b3a3-816181ee71e4
+
+	column semana
+		dataType: int64
+		formatString: 0
+		lineageTag: c5f7f03f-3fb8-4da7-966f-db22cd768032
+		summarizeBy: none
+		sourceColumn: semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column clientes
+		dataType: int64
+		formatString: 0
+		lineageTag: 870729cc-9a90-434e-8277-b42432ef8bb6
+		summarizeBy: none
+		sourceColumn: clientes
+
+		annotation SummarizationSetBy = Automatic
+
+	column venta_bruta
+		dataType: double
+		lineageTag: c4cfcaee-5769-45c4-adb1-46bf08d88600
+		summarizeBy: none
+		sourceColumn: venta_bruta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trx
+		dataType: int64
+		formatString: 0
+		lineageTag: a18c0f0c-0a06-41a7-8ad3-6c25ad8f9ee7
+		summarizeBy: none
+		sourceColumn: trx
+
+		annotation SummarizationSetBy = Automatic
+
+	column unidades
+		dataType: double
+		lineageTag: c538c6ce-6f6b-43a0-95d4-39828d0274c1
+		summarizeBy: none
+		sourceColumn: unidades
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column venta_neta
+		dataType: double
+		lineageTag: 51a3db56-c1b5-4753-80fa-3f3436f883c8
+		summarizeBy: none
+		sourceColumn: venta_neta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column margen
+		dataType: double
+		lineageTag: 8c4bf491-10fb-44e8-a5d3-644efd56131d
+		summarizeBy: none
+		sourceColumn: margen
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gasto_prom
+		dataType: double
+		lineageTag: e31d242b-2f3d-4612-87f1-53a3aba22f3a
+		summarizeBy: none
+		sourceColumn: gasto_prom
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column frecuencia
+		dataType: double
+		lineageTag: d4b9db9b-cb4c-4a0f-a568-927e6959fc12
+		summarizeBy: none
+		sourceColumn: frecuencia
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tkp
+		dataType: double
+		lineageTag: 297c8196-0003-4755-ac13-3f269faedf84
+		summarizeBy: none
+		sourceColumn: tkp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unid_ticket
+		dataType: double
+		lineageTag: 2f12b28f-6b98-4331-a1a7-1f23219033b4
+		summarizeBy: none
+		sourceColumn: unid_ticket
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column precio_prom
+		dataType: double
+		lineageTag: 591c7f63-8423-41f6-95cd-f91c2c7d4295
+		summarizeBy: none
+		sourceColumn: precio_prom
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column margen_por
+		dataType: double
+		lineageTag: 994645a9-3393-4cc2-88ff-f5e0ea645ed0
+		summarizeBy: none
+		sourceColumn: margen_por
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column canal
+		dataType: string
+		lineageTag: b8f4e231-2222-493b-aaaa-234567890bcd
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column clave_semana
+		dataType: string
+		lineageTag: b2c3d4e5-semana-total-clave
+		summarizeBy: none
+		sourceColumn: clave_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	partition prime_indicadores_semana_total = m
+		mode: import
+		source =
+				let
+				    Origen = Value.NativeQuery(AmazonRedshift.Database("dl-prod.ctk5g1p1sube.us-east-1.redshift.amazonaws.com:5439","datalabs"), "select cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Ecommerce') as clave_semana, cast(clientes as bigint) as clientes, cast(venta_bruta as double precision) as venta_bruta, cast(trx as bigint) as trx, cast(unidades as double precision) as unidades, cast(venta_neta as double precision) as venta_neta, cast(margen as double precision) as margen, cast(gasto_prom as double precision) as gasto_prom, cast(frecuencia as double precision) as frecuencia, cast(tkp as double precision) as tkp, cast(unid_ticket as double precision) as unid_ticket, cast(precio_prom as double precision) as precio_prom, cast(margen_por as double precision) as margen_por, 'Ecommerce' as canal from dl_sp_dashboards_ecommerce.prime_indicadores_semana_total union all select cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Piso') as clave_semana, cast(clientes as bigint) as clientes, cast(venta_bruta as double precision) as venta_bruta, cast(trx as bigint) as trx, cast(unidades as double precision) as unidades, cast(venta_neta as double precision) as venta_neta, cast(margen as double precision) as margen, cast(gasto_prom as double precision) as gasto_prom, cast(frecuencia as double precision) as frecuencia, cast(tkp as double precision) as tkp, cast(unid_ticket as double precision) as unid_ticket, cast(precio_prom as double precision) as precio_prom, cast(margen_por as double precision) as margen_por, 'Piso' as canal from dl_sp_dashboards_ecommerce.prime_piso_indicadores_semana_total union all select cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Totales') as clave_semana, cast(clientes as bigint) as clientes, cast(venta_bruta as double precision) as venta_bruta, cast(trx as bigint) as trx, cast(unidades as double precision) as unidades, cast(venta_neta as double precision) as venta_neta, cast(margen as double precision) as margen, cast(gasto_prom as double precision) as gasto_prom, cast(frecuencia as double precision) as frecuencia, cast(tkp as double precision) as tkp, cast(unid_ticket as double precision) as unid_ticket, cast(precio_prom as double precision) as precio_prom, cast(margen_por as double precision) as margen_por, 'Totales' as canal from dl_sp_dashboards_ecommerce.prime_omnicanal_indicadores_semana_total", null, [EnableFolding=true])
+				in
+				    Origen
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegación
+

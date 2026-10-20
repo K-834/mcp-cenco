@@ -1,0 +1,10 @@
+{
+  "deleted": [
+    "proyectos\\test power bi\\Reporte Indicadores Wong Prime Omnicanal.SemanticModel\\definition\\tables\\Indicadores_no_prime.tmdl",
+    "proyectos\\test power bi\\Reporte Indicadores Wong Prime Omnicanal.SemanticModel\\definition\\tables\\Indicadores_prime.tmdl",
+    "proyectos\\test power bi\\Reporte Indicadores Wong Prime Omnicanal.SemanticModel\\definition\\tables\\Indicadores_totales.tmdl",
+    "proyectos\\test power bi\\Reporte Indicadores Wong Prime Omnicanal.SemanticModel\\definition\\tables\\Medidas.tmdl",
+    "proyectos\\test power bi\\Reporte Indicadores Wong Prime Omnicanal.SemanticModel\\definition\\tables\\Selector_Metrica.tmdl"
+  ],
+  "skipped": []
+}

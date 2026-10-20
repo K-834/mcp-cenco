@@ -1,0 +1,33 @@
+table Indicadores_no_prime
+	lineageTag: e779ba09-6d69-4f6a-9188-175c3a5ad287
+
+	column Etiqueta
+		lineageTag: a025225a-29c3-491d-afb1-3c31ef7ddc41
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Etiqueta]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Indicadores_no_prime = calculated
+		mode: import
+		source = ```
+				DATATABLE(
+				    "Etiqueta", STRING,
+				    {
+				        {"1- Vta Neta (MM$)"},
+				        {"2- % Part. Vta Prime/Wong"},
+				        {"3- N Transacciones"},
+				        {"4- % Part. Trx Prime/Wong"},
+				        {"5- N Clientes"},
+				        {"6- % Part. Clientes Prime/Wong"},
+				        {"7- Gasto Promedio Bruto"},
+				        {"8- Frecuencia"},
+				        {"9- Ticket Promedio Bruto"}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = b974e47dcfb54821841d2f31d2d6d12e
+

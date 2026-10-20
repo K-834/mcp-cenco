@@ -1,0 +1,568 @@
+# Model Dictionary
+
+Generated: 2026-08-16T19:11:49.383702
+
+## Actualizacion
+- File: tables\Actualizacion.tmdl
+
+## Canal
+- File: tables\Canal.tmdl
+- Columns:
+  - DATATABLE
+
+## DateTableTemplate_14581265-f8fe-48cb-86cf-31d456daff5f
+- File: tables\DateTableTemplate_14581265-f8fe-48cb-86cf-31d456daff5f.tmdl
+
+## Indicadores_no_prime
+- File: tables\Indicadores_no_prime.tmdl
+- Columns:
+  - DATATABLE
+
+## Indicadores_prime
+- File: tables\Indicadores_prime.tmdl
+- Columns:
+  - DATATABLE
+
+## Indicadores_totales
+- File: tables\Indicadores_totales.tmdl
+- Columns:
+  - DATATABLE
+
+## LocalDateTable_f67b9dc5-8a6a-4276-a352-a016e74396b8
+- File: tables\LocalDateTable_f67b9dc5-8a6a-4276-a352-a016e74396b8.tmdl
+
+## Medidas_BestPractices
+- File: tables\Medidas.tmdl
+- Columns:
+  - CALCULATE
+  - SUM
+  - DIVIDE
+  - CALCULATE
+  - SUM
+  - DIVIDE
+  - CALCULATE
+  - CALCULATE
+  - DIVIDE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - SUM
+  - DIVIDE
+  - MAX
+  - SELECTEDVALUE
+- Measures:
+  - Vta_Neta_Prime_Mes
+  - Vta_Neta_Total_Mes
+  - %Part_Vta_Prime_vs_Total
+  - Trx_Prime_Mes
+  - Trx_Total_Mes
+  - %Part_Trx_Prime_vs_Total
+  - Clientes_Prime_Mes
+  - Clientes_Total_Mes
+  - %Part_Clientes_Prime_vs_Total
+  - Gasto_Promedio_Bruto_Prime_Mes
+  - Frecuencia_Prime_Mes
+  - Vta_Neta_Prime_Semana
+  - Vta_Neta_Total_Semana
+  - %Part_Vta_Prime_vs_Total_Sem
+  - Ultima_Actualizacion
+  - Selected_Value
+
+## Medidas
+- File: tables\Medidas_backup_20260816184500.tmdl
+- Columns:
+  - SWITCH
+  - SELECTEDVALUE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - FORMAT
+  - SUM
+  - SUM
+  - SWITCH
+  - SELECTEDVALUE
+  - CALCULATE
+  - SUM
+  - SUM
+  - CALCULATE
+  - SUM
+  - SUM
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - SUM
+  - SUM
+  - SUM
+  - SUM
+  - SWITCH
+  - SELECTEDVALUE
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - BLANK
+- Measures:
+  - VALOR_PRIME_MES
+  - VALOR_PRIME_SEMANA
+  - VALOR_NO_PRIME_MES
+  - VALOR_NO_PRIME_SEMANA
+  - VALOR_TOTALES_SEMANA
+  - VALOR_TOTALES_MES
+  - valor
+
+## Medidas_BestPractices
+- File: tables\Medidas_bestpractices.tmdl
+- Columns:
+  - CALCULATE
+  - SUM
+  - DIVIDE
+  - CALCULATE
+  - SUM
+  - DIVIDE
+  - CALCULATE
+  - CALCULATE
+  - DIVIDE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - SUM
+  - DIVIDE
+  - MAX
+  - SELECTEDVALUE
+- Measures:
+  - Vta_Neta_Prime_Mes
+  - Vta_Neta_Total_Mes
+  - %Part_Vta_Prime_vs_Total
+  - Trx_Prime_Mes
+  - Trx_Total_Mes
+  - %Part_Trx_Prime_vs_Total
+  - Clientes_Prime_Mes
+  - Clientes_Total_Mes
+  - %Part_Clientes_Prime_vs_Total
+  - Gasto_Promedio_Bruto_Prime_Mes
+  - Frecuencia_Prime_Mes
+  - Vta_Neta_Prime_Semana
+  - Vta_Neta_Total_Semana
+  - %Part_Vta_Prime_vs_Total_Sem
+  - Ultima_Actualizacion
+  - Selected_Value
+
+## Medidas
+- File: tables\Medidas_original_backup.tmdl
+- Columns:
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - FORMAT
+  - FORMAT
+  - FORMAT
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - FORMAT
+  - FORMAT
+  - FORMAT
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - BLANK
+- Measures:
+  - VALOR_PRIME_MES
+  - VALOR_PRIME_SEMANA
+  - VALOR_NO_PRIME_MES
+  - VALOR_NO_PRIME_SEMANA
+  - VALOR_TOTALES_SEMANA
+  - VALOR_TOTALES_MES
+  - valor
+
+## Medidas
+- File: tables\Medidas_refactored.tmdl
+- Columns:
+  - SWITCH
+  - SELECTEDVALUE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - FORMAT
+  - SUM
+  - SUM
+  - SWITCH
+  - SELECTEDVALUE
+  - CALCULATE
+  - SUM
+  - SUM
+  - CALCULATE
+  - SUM
+  - SUM
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - SUM
+  - SUM
+  - SUM
+  - SUM
+  - SWITCH
+  - SELECTEDVALUE
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - CALCULATE
+  - SUM
+  - SUM
+  - NOT
+  - FORMAT
+  - BLANK
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - FORMAT
+  - CALCULATE
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - BLANK
+  - SWITCH
+  - SELECTEDVALUE
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - SUM
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - FORMAT
+  - AVERAGE
+  - BLANK
+- Measures:
+  - VALOR_PRIME_MES
+  - VALOR_PRIME_SEMANA
+  - VALOR_NO_PRIME_MES
+  - VALOR_NO_PRIME_SEMANA
+  - VALOR_TOTALES_SEMANA
+  - VALOR_TOTALES_MES
+  - valor
+
+## prime_indicadores_mes_grupos
+- File: tables\prime_indicadores_mes_grupos.tmdl
+
+## prime_indicadores_mes_total
+- File: tables\prime_indicadores_mes_total.tmdl
+
+## prime_indicadores_semana_grupos
+- File: tables\prime_indicadores_semana_grupos.tmdl
+
+## prime_indicadores_semana_total
+- File: tables\prime_indicadores_semana_total.tmdl
+
+## promocional_mes
+- File: tables\promocional_mes.tmdl
+
+## promocional_semana
+- File: tables\promocional_semana.tmdl
+
+## Selector_Metrica
+- File: tables\Selector_Metrica.tmdl
+- Columns:
+  - SWITCH
+  - BLANK
+  - SWITCH
+  - BLANK
+  - DATATABLE
+

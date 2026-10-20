@@ -1,0 +1,123 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "896fec97492564e36b21",
+  "position": {
+    "x": 140.90909090909091,
+    "y": 234.09090909090909,
+    "z": 13000,
+    "height": 256.81818181818181,
+    "width": 995.4545454545455,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "prime_indicadores_mes_grupos"
+                    }
+                  },
+                  "Property": "mes"
+                }
+              },
+              "queryRef": "prime_indicadores_mes_grupos.mes",
+              "nativeQueryRef": "mes",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "prime_indicadores_mes_grupos"
+                    }
+                  },
+                  "Property": "grupo"
+                }
+              },
+              "queryRef": "prime_indicadores_mes_grupos.grupo",
+              "nativeQueryRef": "grupo"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Selector_Métrica"
+                    }
+                  },
+                  "Property": "Valor Seleccionado"
+                }
+              },
+              "queryRef": "Selector_Métrica.Valor Seleccionado",
+              "nativeQueryRef": "Valor Seleccionado"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "prime_indicadores_mes_grupos"
+                  }
+                },
+                "Property": "mes"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "ee9d06da3718b04c1d51"
+}

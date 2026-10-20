@@ -1,0 +1,37 @@
+# Python & Environments
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Carpetas de datos locales, reportes y proyectos privados
+proyectos/*
+!proyectos/README.md
+!proyectos/test power bi/
+outputs/*
+!outputs/README.md
+.legacy_tools/
+
+# Logs y caches de sistema
+*.log
+schema_debug.log
+.DS_Store
+Thumbs.db
+.idea/
+
+# Mantener configuraciones limpias
+.vscode/*
+!.vscode/mcp.json
+!.vscode/settings.json

@@ -1,0 +1,9 @@
+{
+  "_comment": "Configuracion para opencode. Anade este bloque en tu opencode.json bajo la clave 'mcp'. Usa el entry point `powerbi-mcp` (declarado en pyproject.toml) en vez de un path absoluto a server/mcp_server.py, asi no depende del cwd al lanzar el subproceso.",
+  "mcp": {
+    "powerbi": {
+      "type": "local",
+      "command": ["uv", "run", "--project", "C:/Users/AKRAMOST/Documents/Proyectos_beta/powerbi-mcp-agent", "powerbi-mcp"]
+    }
+  }
+}

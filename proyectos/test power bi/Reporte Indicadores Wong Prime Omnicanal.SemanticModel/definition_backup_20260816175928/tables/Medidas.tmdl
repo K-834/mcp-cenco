@@ -1,0 +1,570 @@
+table Medidas
+	lineageTag: f8f8d6e9-50c3-4519-aa98-cc022749d229
+
+	measure VALOR_PRIME_MES = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(Indicadores_prime[Etiqueta]),
+			
+			    "1- Venta Neta", 
+			        FORMAT(CALCULATE(SUM(prime_indicadores_mes_grupos[venta_neta]), prime_indicadores_mes_grupos[grupo]="PRIME"),"#,0"
+			    ),
+			
+			    "2- %Part. Vta Prime/Wong",
+			        VAR vtaPrime = CALCULATE(SUM(prime_indicadores_mes_grupos[venta_neta]), prime_indicadores_mes_grupos[grupo]="PRIME")
+			        VAR vtaTotal = SUM(prime_indicadores_mes_total[venta_neta])
+			        RETURN FORMAT(DIVIDE(vtaPrime, vtaTotal), "0.0%"),
+			
+			    "3- Nº Transacciones", 
+			        FORMAT(CALCULATE(SUM(prime_indicadores_mes_grupos[trx]), prime_indicadores_mes_grupos[grupo]="PRIME"   ),
+			            "#,0"
+			        ),
+			
+			    "4- %Part. Trx Prime/Wong",
+			        VAR trxPrime = CALCULATE(SUM(prime_indicadores_mes_grupos[trx]), prime_indicadores_mes_grupos[grupo]="PRIME")
+			        VAR trxTotal = SUM(prime_indicadores_mes_total[trx])
+			        RETURN FORMAT(DIVIDE(trxPrime, trxTotal), "0.0%"),
+			
+			    "5- Nº Clientes", 
+			        FORMAT(CALCULATE(SUM(prime_indicadores_mes_grupos[clientes]), prime_indicadores_mes_grupos[grupo]="PRIME"   ),
+			            "#,0"
+			        ),
+			
+			    "6- %Part. Clientes Prime/Wong",
+			        VAR cliPrime = CALCULATE(SUM(prime_indicadores_mes_grupos[clientes]), prime_indicadores_mes_grupos[grupo]="PRIME")
+			        VAR cliTotal = CALCULATE(SUM(prime_indicadores_mes_grupos[clientes]), prime_indicadores_mes_grupos[grupo]="NO PRIME") + cliPrime
+			        RETURN FORMAT(DIVIDE(cliPrime, cliTotal), "0.0%"),
+			
+			    "7- Gasto Promedio Bruto", 
+			        FORMAT(CALCULATE(AVERAGE(prime_indicadores_mes_grupos[gasto_prom]), prime_indicadores_mes_grupos[grupo]="PRIME"),"#,0"),
+			
+			
+			  "8- Frecuencia",
+			    FORMAT(
+			        CALCULATE(
+			            AVERAGE(prime_indicadores_mes_grupos[frecuencia]),
+			            prime_indicadores_mes_grupos[grupo] = "PRIME"
+			        ),
+			        "#,0.00"
+			    ),
+			
+			    "9- Ticket Promedio Bruto", 
+			      FORMAT(  CALCULATE(AVERAGE(prime_indicadores_mes_grupos[tkp]), prime_indicadores_mes_grupos[grupo]="PRIME"), "#,0"
+			    ),
+			
+			     "9.1- Vta Neta Promocional (Punto Precio)", 
+			    FORMAT(SUM(promocional_mes[venta_neta_promocional]), "#,0"),
+			
+			
+			    "9.2- % Part. Vta Neta Promocional", 
+			        VAR vtaPromo = SUM(promocional_mes[venta_neta_promocional])
+			        VAR vtaNetaTotal = CALCULATE(SUM(prime_indicadores_mes_grupos[venta_neta]), prime_indicadores_mes_grupos[grupo]="PRIME")
+			        RETURN FORMAT(DIVIDE(vtaPromo, vtaNetaTotal), "0.0%"),
+			
+			    "9.3- Clientes Promocional",
+			        FORMAT(SUM(promocional_mes[clientes_promocional]), "#,0"),
+			
+			    "9.4- % Clientes Promocional",
+			        VAR cliPromo = SUM(promocional_mes[clientes_promocional])
+			        VAR cliTotal2 = CALCULATE(SUM(prime_indicadores_mes_grupos[clientes]), prime_indicadores_mes_grupos[grupo]="PRIME")
+			        RETURN FORMAT(DIVIDE(cliPromo, cliTotal2), "0.0%"),
+			
+			    "9.5- Dscto Bruto Promocional",
+			       FORMAT(SUM(promocional_mes[dsct_bruto_promocional]), "#,0")
+			)
+			
+			```
+		lineageTag: 7e7a594c-2b45-43b8-8a1d-54e53cbd6cf0
+
+		formatStringDefinition = ""
+
+	measure VALOR_PRIME_SEMANA = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(Indicadores_prime[Etiqueta]),
+			
+			    // 1. Venta Neta
+			    "1- Venta Neta", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_semana_grupos[venta_neta]), 
+			                prime_indicadores_semana_grupos[grupo] = "PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 2. % Part. Vta Prime/Wong
+			    "2- %Part. Vta Prime/Wong",
+			        VAR vtaPrime = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[venta_neta]), 
+			            prime_indicadores_semana_grupos[grupo] = "PRIME"
+			        )
+			        VAR vtaTotal = SUM(prime_indicadores_semana_total[venta_neta])
+			        RETURN FORMAT(DIVIDE(vtaPrime, vtaTotal), "0.0%"),
+			
+			    // 3. Nº Transacciones
+			    "3- Nº Transacciones", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_semana_grupos[trx]), 
+			                prime_indicadores_semana_grupos[grupo] = "PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 4. %Part. Trx Prime/Wong
+			    "4- %Part. Trx Prime/Wong",
+			        VAR trxPrime = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[trx]), 
+			            prime_indicadores_semana_grupos[grupo] = "PRIME"
+			        )
+			        VAR trxTotal = SUM(prime_indicadores_semana_total[trx])
+			        RETURN FORMAT(DIVIDE(trxPrime, trxTotal), "0.0%"),
+			
+			    // 5. Nº Clientes
+			    "5- Nº Clientes", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_semana_grupos[clientes]), 
+			                prime_indicadores_semana_grupos[grupo] = "PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 6. %Part. Clientes Prime/Wong
+			    "6- %Part. Clientes Prime/Wong",
+			        VAR cliPrime = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[clientes]), 
+			            prime_indicadores_semana_grupos[grupo] = "PRIME"
+			        )
+			        VAR cliTotal = cliPrime + CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[clientes]), 
+			            prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			        )
+			        RETURN FORMAT(DIVIDE(cliPrime, cliTotal), "0.0%"),
+			
+			    // 7. Gasto Promedio Bruto
+			    "7- Gasto Promedio Bruto", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_semana_grupos[gasto_prom]), 
+			                prime_indicadores_semana_grupos[grupo] = "PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 8. Frecuencia
+			    "8- Frecuencia", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_semana_grupos[frecuencia]), 
+			                prime_indicadores_semana_grupos[grupo] = "PRIME"
+			            ),
+			            "#,0.00"
+			        ),
+			
+			    // 9. Ticket Promedio Bruto
+			    "9- Ticket Promedio Bruto", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_semana_grupos[tkp]), 
+			                prime_indicadores_semana_grupos[grupo] = "PRIME"
+			            ),
+			            "#,0.0"
+			        ),
+			
+			    // 10. Vta Neta Promocional (Punto Precio)
+			    "9.1- Vta Neta Promocional (Punto Precio)", 
+			        FORMAT(SUM(promocional_semana[venta_neta_promocional]), "#,0"),
+			
+			    // 11. % Part. Vta Neta Promocional
+			    "9.2- % Part. Vta Neta Promocional", 
+			        VAR vtaPromo = SUM(promocional_semana[venta_neta_promocional])
+			        VAR vtaNetaTotal = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[venta_neta]), 
+			            prime_indicadores_semana_grupos[grupo] = "PRIME"
+			        )
+			        RETURN FORMAT(DIVIDE(vtaPromo, vtaNetaTotal), "0.0%"),
+			
+			    // 12. Clientes Promocional
+			    "9.3- Clientes Promocional",
+			        FORMAT(SUM(promocional_semana[clientes_promocional]), "#,0"),
+			
+			    // 13. % Clientes Promocional
+			    "9.4- % Clientes Promocional",
+			        VAR cliPromo = SUM(promocional_semana[clientes_promocional])
+			        VAR cliTotal2 = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[clientes]), 
+			            prime_indicadores_semana_grupos[grupo] = "PRIME"
+			        )
+			        RETURN FORMAT(DIVIDE(cliPromo, cliTotal2), "0.0%"),
+			
+			    // 14. Dscto Bruto Promocional
+			    "9.5- Dscto Bruto Promocional",
+			        FORMAT(SUM(promocional_semana[dsct_bruto_promocional]), "#,0")
+			)
+			
+			```
+		lineageTag: cfd09497-9adc-4008-bbb3-54e06b787494
+
+	measure VALOR_NO_PRIME_MES = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(Indicadores_no_prime[Etiqueta]),
+			
+			    // 1. Vta Neta (MM$)
+			    "1- Vta Neta (MM$)", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_mes_grupos[venta_neta]), 
+			                prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			            ), 
+			            "#,0"
+			        ),
+			
+			    // 2. % Part. Vta Prime/Wong
+			    "2- % Part. Vta Prime/Wong",
+			        VAR vtaNoPrime = CALCULATE(
+			            SUM(prime_indicadores_mes_grupos[venta_neta]), 
+			            prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			        )
+			        VAR vtaTotal = SUM(prime_indicadores_mes_total[venta_neta])
+			        RETURN IF(
+			            NOT(ISBLANK(vtaTotal)),
+			            FORMAT(DIVIDE(vtaNoPrime, vtaTotal), "0.0%"),
+			            BLANK()
+			        ),
+			
+			    // 3. N Transacciones
+			    "3- N Transacciones", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_mes_grupos[trx]), 
+			                prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 4. % Part. Trx Prime/Wong
+			    "4- % Part. Trx Prime/Wong",
+			        VAR trxNoPrime = CALCULATE(
+			            SUM(prime_indicadores_mes_grupos[trx]), 
+			            prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			        )
+			        VAR trxTotal = SUM(prime_indicadores_mes_total[trx])
+			        RETURN IF(
+			            NOT(ISBLANK(trxTotal)),
+			            FORMAT(DIVIDE(trxNoPrime, trxTotal), "0.0%"),
+			            BLANK()
+			        ),
+			
+			    // 5. N Clientes
+			    "5- N Clientes", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_mes_grupos[clientes]), 
+			                prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 6. % Part. Clientes Prime/Wong
+			    "6- % Part. Clientes Prime/Wong",
+			        VAR cliNoPrime = CALCULATE(
+			            SUM(prime_indicadores_mes_grupos[clientes]), 
+			            prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			        )
+			        VAR cliTotal = cliNoPrime + CALCULATE(
+			            SUM(prime_indicadores_mes_grupos[clientes]), 
+			            prime_indicadores_mes_grupos[grupo]="PRIME"
+			        )
+			        RETURN IF(
+			            NOT(ISBLANK(cliTotal)),
+			            FORMAT(DIVIDE(cliNoPrime, cliTotal), "0.0%"),
+			            BLANK()
+			        ),
+			
+			    // 7. Gasto Promedio Bruto
+			    "7- Gasto Promedio Bruto", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_mes_grupos[gasto_prom]), 
+			                prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 8. Frecuencia
+			    "8- Frecuencia", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_mes_grupos[frecuencia]), 
+			                prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			            ),
+			            "#,0.00"
+			        ),
+			
+			    // 9. Ticket Promedio Bruto
+			    "9- Ticket Promedio Bruto", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_mes_grupos[tkp]), 
+			                prime_indicadores_mes_grupos[grupo]="NO PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    BLANK()
+			)
+			
+			```
+		lineageTag: 5d7ae4cb-9b05-48d9-86e1-ae9e75b4764f
+
+	measure 'TEST Vta Neta NO PRIME' = ```
+			
+			[VALOR_PRIME_MES] 
+			
+			```
+		lineageTag: d47371cb-498e-47aa-ab1d-b64192c3716a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure VALOR_NO_PRIME_SEMANA = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(Indicadores_no_prime[Etiqueta]),
+			
+			    // 1. Vta Neta (MM$)
+			    "1- Vta Neta (MM$)", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_semana_grupos[venta_neta]), 
+			                prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			            ), 
+			            "#,0"
+			        ),
+			
+			    // 2. % Part. Vta Prime/Wong
+			    "2- % Part. Vta Prime/Wong",
+			        VAR vtaPrime = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[venta_neta]), 
+			            prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			        )
+			        VAR vtaTotal = SUM(prime_indicadores_semana_total[venta_neta])
+			        RETURN IF(
+			            NOT(ISBLANK(vtaTotal)),
+			            FORMAT(DIVIDE(vtaPrime, vtaTotal), "0.0%"),
+			            BLANK()
+			        ),
+			
+			    // 3. N Transacciones
+			    "3- N Transacciones", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_semana_grupos[trx]), 
+			                prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			            ), 
+			            "#,0"
+			        ),
+			
+			    // 4. % Part. Trx Prime/Wong
+			    "4- % Part. Trx Prime/Wong",
+			        VAR trxPrime = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[trx]), 
+			            prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			        )
+			        VAR trxTotal = trxPrime + CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[trx]), 
+			            prime_indicadores_semana_grupos[grupo] = "PRIME"
+			        )
+			        RETURN IF(
+			            NOT(ISBLANK(trxTotal)),
+			            FORMAT(DIVIDE(trxPrime, trxTotal), "0.0%"),
+			            BLANK()
+			        ),
+			
+			    // 5. N Clientes
+			    "5- N Clientes", 
+			        FORMAT(
+			            CALCULATE(
+			                SUM(prime_indicadores_semana_grupos[clientes]), 
+			                prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 6. % Part. Clientes Prime/Wong
+			    "6- % Part. Clientes Prime/Wong",
+			        VAR cliPrime = CALCULATE(
+			            SUM(prime_indicadores_semana_grupos[clientes]), 
+			            prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			        )
+			        VAR cliTotal = SUM(prime_indicadores_semana_total[clientes])
+			        RETURN IF(
+			            NOT(ISBLANK(cliTotal)),
+			            FORMAT(DIVIDE(cliPrime, cliTotal), "0.0%"),
+			            BLANK()
+			        ),
+			
+			    // 7. Gasto Promedio Bruto
+			    "7- Gasto Promedio Bruto", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_semana_grupos[gasto_prom]), 
+			                prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    // 8. Frecuencia
+			    "8- Frecuencia", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_semana_grupos[frecuencia]), 
+			                prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			            ),
+			            "#,0.00"
+			        ),
+			
+			    // 9. Ticket Promedio Bruto
+			    "9- Ticket Promedio Bruto", 
+			        FORMAT(
+			            CALCULATE(
+			                AVERAGE(prime_indicadores_semana_grupos[tkp]), 
+			                prime_indicadores_semana_grupos[grupo] = "NO PRIME"
+			            ),
+			            "#,0"
+			        ),
+			
+			    BLANK()
+			)
+			
+			```
+		lineageTag: 45715f37-14e1-4057-9c76-4c827902712d
+
+	measure VALOR_TOTALES_SEMANA = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(Indicadores_totales[Etiqueta]),
+			
+			    // 1. Vta Neta (MM$)
+			    "1- Vta Neta (MM$)", 
+			        FORMAT(
+			            SUM(prime_indicadores_semana_total[venta_neta]), 
+			            "#,0"
+			        ),
+			
+			    // 2. N Transacciones
+			    "2- N Transacciones", 
+			        FORMAT(
+			            SUM(prime_indicadores_semana_total[trx]), 
+			            "#,0"
+			        ),
+			
+			    // 3. N Clientes
+			    "3- N Clientes", 
+			        FORMAT(
+			            SUM(prime_indicadores_semana_total[clientes]), 
+			            "#,0"
+			        ),
+			
+			    // 4. Gasto Promedio Bruto
+			    "4- Gasto Promedio Bruto", 
+			        FORMAT(
+			            AVERAGE(prime_indicadores_semana_total[gasto_prom]), 
+			            "#,0"
+			        ),
+			
+			    // 5. Frecuencia
+			    "5- Frecuencia", 
+			        FORMAT(
+			            AVERAGE(prime_indicadores_semana_total[frecuencia]), 
+			            "#,0.00"
+			        ),
+			
+			    // 6. Ticket Promedio Bruto
+			    "6- Ticket Promedio Bruto", 
+			        FORMAT(
+			            AVERAGE(prime_indicadores_semana_total[tkp]), 
+			            "#,0"
+			        ),
+			
+			    BLANK()
+			)
+			
+			```
+		lineageTag: 6cd98934-8dbc-413b-ae9f-2b8f8d5e743d
+
+	measure VALOR_TOTALES_MES = ```
+			
+			SWITCH(
+			    SELECTEDVALUE(Indicadores_totales[Etiqueta]),
+			
+			    // 1- Vta Neta (MM$)
+			    "1- Vta Neta (MM$)", 
+			        FORMAT(
+			            SUM(prime_indicadores_mes_total[venta_neta]), 
+			            "#,0"
+			        ),
+			
+			    // 2- N Transacciones
+			    "2- N Transacciones", 
+			        FORMAT(
+			            SUM(prime_indicadores_mes_total[trx]), 
+			            "#,0"
+			        ),
+			
+			    // 3- N Clientes
+			    "3- N Clientes", 
+			        FORMAT(
+			            SUM(prime_indicadores_mes_total[clientes]), 
+			            "#,0"
+			        ),
+			
+			    // 4- Gasto Promedio Bruto
+			    "4- Gasto Promedio Bruto", 
+			        FORMAT(
+			            AVERAGE(prime_indicadores_mes_total[gasto_prom]), 
+			            "#,0"
+			        ),
+			
+			    // 5- Frecuencia
+			    "5- Frecuencia", 
+			        FORMAT(
+			            AVERAGE(prime_indicadores_mes_total[frecuencia]), 
+			            "#,0.00"
+			        ),
+			
+			    // 6- Ticket Promedio Bruto
+			    "6- Ticket Promedio Bruto", 
+			        FORMAT(
+			            AVERAGE(prime_indicadores_mes_total[tkp]), 
+			            "#,0"
+			        ),
+			
+			    BLANK()
+			)
+			
+			```
+		lineageTag: c3eeda6a-e32e-43b9-b24c-efe4895854db
+
+	measure valor = [VALOR_PRIME_MES]
+		lineageTag: 98bf20fc-5da3-4c6f-8b16-4af6132cc211
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column
+		formatString: 0
+		lineageTag: 45aa7d2e-3b1c-4b8e-8fd8-d9e06765384b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Medidas = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 7a7961eaca884304a849527f494c75ed
+

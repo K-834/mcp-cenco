@@ -1,0 +1,70 @@
+table promocional_semana
+	lineageTag: be5339d2-4ca2-4424-a16b-64b02616dbe1
+
+	column semana
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b74ebf6-c6bb-4eb9-a429-5749974fdc50
+		summarizeBy: none
+		sourceColumn: semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column dsct_bruto_promocional
+		dataType: double
+		lineageTag: 0a33b56f-fd96-4d55-8a9f-e583f7469eaa
+		summarizeBy: none
+		sourceColumn: dsct_bruto_promocional
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column clientes_promocional
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ce4913f-deb8-407f-9a37-29a9d4cb54c7
+		summarizeBy: none
+		sourceColumn: clientes_promocional
+
+		annotation SummarizationSetBy = Automatic
+
+	column venta_neta_promocional
+		dataType: double
+		lineageTag: 201b9d56-91bc-41e4-91ce-80b4d280dfd3
+		summarizeBy: none
+		sourceColumn: venta_neta_promocional
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column canal
+		dataType: string
+		lineageTag: e2e716c4-5555-422e-dddd-567890123ef0
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column clave_semana
+		dataType: string
+		lineageTag: e5f6a7b8-semana-promo-clave
+		summarizeBy: none
+		sourceColumn: clave_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	partition promocional_semana = m
+		mode: import
+		source =
+				let
+				    Origen = Value.NativeQuery(AmazonRedshift.Database("dl-prod.ctk5g1p1sube.us-east-1.redshift.amazonaws.com:5439","datalabs"), "select cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Ecommerce') as clave_semana, cast(dsct_bruto_promocional as double precision) as dsct_bruto_promocional, cast(clientes_promocional as bigint) as clientes_promocional, cast(venta_neta_promocional as double precision) as venta_neta_promocional, 'Ecommerce' as canal from dl_sp_temporal.promotion_semana union all select cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Piso') as clave_semana, cast(dsct_bruto_promocional as double precision) as dsct_bruto_promocional, cast(clientes as bigint) as clientes_promocional, cast(venta_neta_promocional as double precision) as venta_neta_promocional, 'Piso' as canal from dl_sp_dashboards_ecommerce.promocion_prime_piso_semana union all select cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Totales') as clave_semana, cast(dsct_bruto_promocional as double precision) as dsct_bruto_promocional, cast(clientes as bigint) as clientes_promocional, cast(venta_neta_promocional as double precision) as venta_neta_promocional, 'Totales' as canal from dl_sp_dashboards_ecommerce.promocion_prime_omnicanal_semana", null, [EnableFolding=true]),
+				    #"Filas ordenadas" = Table.Sort(Origen,{{"semana", Order.Descending}})
+				in
+				    #"Filas ordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

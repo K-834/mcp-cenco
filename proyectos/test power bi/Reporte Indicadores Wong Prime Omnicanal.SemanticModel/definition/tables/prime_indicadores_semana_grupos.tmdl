@@ -1,0 +1,174 @@
+table prime_indicadores_semana_grupos
+	lineageTag: 82d88cc3-7d89-4aff-b260-926d4a4733af
+
+	column grupo
+		dataType: string
+		lineageTag: 84da1d97-7f1f-4604-8fe7-7ac46a825d7f
+		summarizeBy: none
+		sourceColumn: grupo
+
+		annotation SummarizationSetBy = Automatic
+
+	column cadena
+		dataType: string
+		lineageTag: b96d50e9-6a90-41ed-a77c-1ab4b8c2227d
+		summarizeBy: none
+		sourceColumn: cadena
+
+		annotation SummarizationSetBy = Automatic
+
+	column semana
+		dataType: int64
+		formatString: 0
+		lineageTag: 44a48eca-a0ca-4eb3-bf24-65883c9d40c6
+		summarizeBy: none
+		sourceColumn: semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column clientes
+		dataType: int64
+		formatString: 0
+		lineageTag: f477941d-f72e-47a4-9e5e-2582abee1e43
+		summarizeBy: sum
+		sourceColumn: clientes
+
+		annotation SummarizationSetBy = Automatic
+
+	column venta_bruta
+		dataType: double
+		lineageTag: 9e5ddbe6-81b5-4e0a-b34b-d843b6098a04
+		summarizeBy: sum
+		sourceColumn: venta_bruta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column trx
+		dataType: int64
+		formatString: 0
+		lineageTag: 8348873e-9ea9-48e9-b937-3b364abc9457
+		summarizeBy: sum
+		sourceColumn: trx
+
+		annotation SummarizationSetBy = Automatic
+
+	column unidades
+		dataType: double
+		lineageTag: 315b2e1d-6738-4298-852c-ed60696d0498
+		summarizeBy: sum
+		sourceColumn: unidades
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column venta_neta
+		dataType: double
+		lineageTag: 04520aff-8da8-43be-91a3-7c46f9f48636
+		summarizeBy: sum
+		sourceColumn: venta_neta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column margen
+		dataType: double
+		lineageTag: 79a16039-11ef-4e68-8e0a-73c038b34b0b
+		summarizeBy: sum
+		sourceColumn: margen
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gasto_prom
+		dataType: double
+		lineageTag: 0d93aaa5-9e39-4a3a-92c0-90102991092e
+		summarizeBy: sum
+		sourceColumn: gasto_prom
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column frecuencia
+		dataType: double
+		lineageTag: e7ddea97-9e48-4d2f-8e2f-f4e849f97b22
+		summarizeBy: sum
+		sourceColumn: frecuencia
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tkp
+		dataType: double
+		lineageTag: 31060176-300f-4cc7-9a28-97ac50de595c
+		summarizeBy: sum
+		sourceColumn: tkp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unid_ticket
+		dataType: double
+		lineageTag: ca875e23-d7a5-42eb-844f-7cad87c6b704
+		summarizeBy: sum
+		sourceColumn: unid_ticket
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column precio_prom
+		dataType: double
+		lineageTag: c4ca6b04-9d75-4628-9a3b-f07601219553
+		summarizeBy: sum
+		sourceColumn: precio_prom
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column margen_por
+		dataType: double
+		lineageTag: 4af6266e-c232-4f81-a718-dbcba7f009b4
+		summarizeBy: sum
+		sourceColumn: margen_por
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column canal
+		dataType: string
+		lineageTag: a7e3d120-1111-482a-9999-123456789abc
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column clave_semana
+		dataType: string
+		lineageTag: a1b2c3d4-semana-grupos-clave
+		summarizeBy: none
+		sourceColumn: clave_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	partition prime_indicadores_semana_grupos = m
+		mode: import
+		source =
+				let
+				    Origen = Value.NativeQuery(AmazonRedshift.Database("dl-prod.ctk5g1p1sube.us-east-1.redshift.amazonaws.com:5439","datalabs"), "select cast(grupo as varchar(50)) as grupo, cast(cadena as varchar(50)) as cadena, cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Ecommerce') as clave_semana, cast(clientes as bigint) as clientes, cast(venta_bruta as double precision) as venta_bruta, cast(trx as bigint) as trx, cast(unidades as double precision) as unidades, cast(venta_neta as double precision) as venta_neta, cast(margen as double precision) as margen, cast(gasto_prom as double precision) as gasto_prom, cast(frecuencia as double precision) as frecuencia, cast(tkp as double precision) as tkp, cast(unid_ticket as double precision) as unid_ticket, cast(precio_prom as double precision) as precio_prom, cast(margen_por as double precision) as margen_por, 'Ecommerce' as canal from dl_sp_dashboards_ecommerce.prime_indicadores_semana_grupos union all select cast(grupo as varchar(50)) as grupo, cast(cadena as varchar(50)) as cadena, cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Piso') as clave_semana, cast(clientes as bigint) as clientes, cast(venta_bruta as double precision) as venta_bruta, cast(trx as bigint) as trx, cast(unidades as double precision) as unidades, cast(venta_neta as double precision) as venta_neta, cast(margen as double precision) as margen, cast(gasto_prom as double precision) as gasto_prom, cast(frecuencia as double precision) as frecuencia, cast(tkp as double precision) as tkp, cast(unid_ticket as double precision) as unid_ticket, cast(precio_prom as double precision) as precio_prom, cast(margen_por as double precision) as margen_por, 'Piso' as canal from dl_sp_dashboards_ecommerce.prime_piso_indicadores_semana_grupos union all select cast(grupo as varchar(50)) as grupo, cast(cadena as varchar(50)) as cadena, cast(semana as bigint) as semana, (cast(semana as varchar(50)) || '-Totales') as clave_semana, cast(clientes as bigint) as clientes, cast(venta_bruta as double precision) as venta_bruta, cast(trx as bigint) as trx, cast(unidades as double precision) as unidades, cast(venta_neta as double precision) as venta_neta, cast(margen as double precision) as margen, cast(gasto_prom as double precision) as gasto_prom, cast(frecuencia as double precision) as frecuencia, cast(tkp as double precision) as tkp, cast(unid_ticket as double precision) as unid_ticket, cast(precio_prom as double precision) as precio_prom, cast(margen_por as double precision) as margen_por, 'Totales' as canal from dl_sp_dashboards_ecommerce.prime_omnicanal_indicadores_semana_grupos", null, [EnableFolding=true])
+				in
+				    Origen
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegación
+

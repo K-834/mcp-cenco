@@ -1,0 +1,68 @@
+table promocional_mes
+	lineageTag: 8165bd6c-82c2-47ad-8da2-f8ca351d14f5
+
+	column mes
+		dataType: string
+		lineageTag: 4a26deba-5c4b-4ac8-9cf1-2cf601d8a6be
+		summarizeBy: none
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column dsct_bruto_promocional
+		dataType: double
+		lineageTag: e9d05495-a2f1-40c5-ab57-5e73a1051157
+		summarizeBy: none
+		sourceColumn: dsct_bruto_promocional
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column clientes_promocional
+		dataType: int64
+		formatString: 0
+		lineageTag: a0a0d821-20cb-431d-9be1-f4febc5981c5
+		summarizeBy: none
+		sourceColumn: clientes_promocional
+
+		annotation SummarizationSetBy = Automatic
+
+	column venta_neta_promocional
+		dataType: double
+		lineageTag: f077360a-0c73-459f-b229-9e591c861498
+		summarizeBy: none
+		sourceColumn: venta_neta_promocional
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column canal
+		dataType: string
+		lineageTag: f3f827d5-6666-433f-eeee-678901234fa1
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column clave_mes
+		dataType: string
+		lineageTag: f6a7b8c9-mes-promo-clave
+		summarizeBy: none
+		sourceColumn: clave_mes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition promocional_mes = m
+		mode: import
+		source =
+				let
+				    Origen = Value.NativeQuery(AmazonRedshift.Database("dl-prod.ctk5g1p1sube.us-east-1.redshift.amazonaws.com:5439","datalabs"), "select cast(mes as varchar(50)) as mes, (cast(mes as varchar(50)) || '-Ecommerce') as clave_mes, cast(dsct_bruto_promocional as double precision) as dsct_bruto_promocional, cast(clientes_promocional as bigint) as clientes_promocional, cast(venta_neta_promocional as double precision) as venta_neta_promocional, 'Ecommerce' as canal from dl_sp_temporal.promotion_mes union all select cast(mes as varchar(50)) as mes, (cast(mes as varchar(50)) || '-Piso') as clave_mes, cast(dsct_bruto_promocional as double precision) as dsct_bruto_promocional, cast(clientes as bigint) as clientes_promocional, cast(venta_neta_promocional as double precision) as venta_neta_promocional, 'Piso' as canal from dl_sp_dashboards_ecommerce.promocion_prime_piso_mes union all select cast(mes as varchar(50)) as mes, (cast(mes as varchar(50)) || '-Totales') as clave_mes, cast(dsct_bruto_promocional as double precision) as dsct_bruto_promocional, cast(clientes as bigint) as clientes_promocional, cast(venta_neta_promocional as double precision) as venta_neta_promocional, 'Totales' as canal from dl_sp_dashboards_ecommerce.promocion_prime_omnicanal_mes", null, [EnableFolding=true])
+				in
+				    Origen
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,76 @@
+table Selector_Metrica
+	lineageTag: acbed752-a571-4942-a2e0-3ce8358c54a7
+
+	measure 'Valor Seleccionado' = ```
+			
+			VAR seleccion = SELECTEDVALUE('Selector_Metrica'[Métrica])
+			RETURN
+			    SWITCH(
+			        seleccion,
+			        "Venta Neta",      SUM(prime_indicadores_mes_grupos[venta_neta]),
+			        "Margen",          SUM(prime_indicadores_mes_grupos[margen]),
+			        "Clientes",        SUM(prime_indicadores_mes_grupos[clientes]),
+			        "Unidades",        SUM(prime_indicadores_mes_grupos[unidades]),
+			        "Frecuencia",      AVERAGE(prime_indicadores_mes_grupos[frecuencia]),
+			        "Gasto Prom",      AVERAGE(prime_indicadores_mes_grupos[gasto_prom]),
+			        "TKP",             AVERAGE(prime_indicadores_mes_grupos[tkp]),
+			        "Transacciones",   SUM(prime_indicadores_mes_grupos[trx]),
+			        BLANK()
+			    )
+			
+			```
+		lineageTag: 3874641d-41ed-4942-8e55-2035bdeb1c55
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Valor Seleccionado semana' = ```
+			
+			VAR seleccion = SELECTEDVALUE('Selector_Metrica'[Métrica])
+			RETURN
+			    SWITCH(
+			        seleccion,
+			        "Venta Neta",      SUM(prime_indicadores_semana_grupos[venta_neta]),
+			        "Margen",          SUM(prime_indicadores_semana_grupos[margen]),
+			        "Clientes",        SUM(prime_indicadores_semana_grupos[clientes]),
+			        "Unidades",        SUM(prime_indicadores_semana_grupos[unidades]),
+			        "Frecuencia",      AVERAGE(prime_indicadores_semana_grupos[frecuencia]),
+			        "Gasto Prom",      AVERAGE(prime_indicadores_semana_grupos[gasto_prom]),
+			        "TKP",             AVERAGE(prime_indicadores_semana_grupos[tkp]),
+			        "Transacciones",   SUM(prime_indicadores_semana_grupos[trx]),
+			        BLANK()
+			    )
+			
+			```
+		lineageTag: 5bb0868a-5d72-4c05-b622-6ae005f25ace
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Métrica
+		lineageTag: ac2ad8dd-0716-48fc-82f2-a42ba9367d87
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Métrica]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Selector_Metrica = calculated
+		mode: import
+		source = ```
+				DATATABLE(
+				    "Métrica", STRING,
+				    {
+				        {"Venta Neta"},
+				        {"Margen"},
+				        {"Clientes"},
+				        {"Unidades"},
+				        {"Frecuencia"},
+				        {"Gasto Prom"},
+				        {"TKP"},
+				        {"Transacciones"}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 5de4f5da9f7b4625a4ec7f778751de9f
+

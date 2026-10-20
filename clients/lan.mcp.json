@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "powerbi-mcp-lan": {
+      "url": "http://10.166.204.119:8001/mcp",
+      "transport": "streamable-http"
+    }
+  }
+}

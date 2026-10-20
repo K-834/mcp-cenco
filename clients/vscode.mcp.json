@@ -1,0 +1,15 @@
+{
+  "$comment": "Configuracion para VS Code (GitHub Copilot u otros clientes que usan .vscode/mcp.json). VS Code busca este archivo automaticamente en .vscode/mcp.json dentro de la raiz del workspace. La copia efectiva para VS Code vive en .vscode/mcp.json; este archivo en clients/ queda como referencia versionada. Usa el entry point `powerbi-mcp` para evitar problemas de cwd.",
+  "servers": {
+    "powerbi-mcp": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--project",
+        "C:/Users/AKRAMOST/Documents/Proyectos_beta/powerbi-mcp-agent",
+        "powerbi-mcp"
+      ]
+    }
+  }
+}

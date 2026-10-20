@@ -1,0 +1,33 @@
+relationship AutoDetected_2983c356-2f37-42f8-a98c-e5c5cb74f630
+	crossFilteringBehavior: bothDirections
+	fromColumn: prime_indicadores_semana_grupos.clave_semana
+	toColumn: prime_indicadores_semana_total.clave_semana
+
+relationship e387d7fd-2efd-a286-e0bb-4b3e6fe63874
+	crossFilteringBehavior: bothDirections
+	fromColumn: prime_indicadores_mes_grupos.clave_mes
+	toColumn: prime_indicadores_mes_total.clave_mes
+
+relationship 80c0e5ad-f204-34b0-9d5c-b66462223500
+	crossFilteringBehavior: bothDirections
+	fromColumn: prime_indicadores_mes_grupos.clave_mes
+	toColumn: promocional_mes.clave_mes
+
+relationship dbe1a5f8-6dd6-a66f-7271-f4e04e361c64
+	crossFilteringBehavior: bothDirections
+	fromColumn: prime_indicadores_semana_grupos.clave_semana
+	toColumn: promocional_semana.clave_semana
+
+relationship 683671d3-1065-4651-9e5e-c539e8ddf8de
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Actualizacion.Fecha
+	toColumn: LocalDateTable_f67b9dc5-8a6a-4276-a352-a016e74396b8.Date
+
+relationship rel_canal_semana_grupos
+	fromColumn: prime_indicadores_semana_grupos.canal
+	toColumn: Canal.Canal
+
+relationship rel_canal_mes_grupos
+	fromColumn: prime_indicadores_mes_grupos.canal
+	toColumn: Canal.Canal
+

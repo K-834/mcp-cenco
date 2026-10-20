@@ -1,0 +1,39 @@
+table Indicadores_prime
+	lineageTag: 4adf57b7-9d6e-46ea-92b9-bbb99ca2ff16
+
+	column Etiqueta
+		lineageTag: 3575e5fc-c990-419c-8819-175438a455c2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Etiqueta]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Indicadores_prime = calculated
+		mode: import
+		source = ```
+				DATATABLE(
+				    "Etiqueta", STRING,
+				    {
+				        {"1- Venta Neta"},
+				        {"2- %Part. Vta Prime/Wong"},
+				        {"3- Nº Transacciones"},
+				        {"4- %Part. Trx Prime/Wong"},
+				        {"5- Nº Clientes"},
+				        {"6- %Part. Clientes Prime/Wong"},
+				        {"7- Gasto Promedio Bruto"},
+				        {"8- Frecuencia"},
+				        {"9- Ticket Promedio Bruto"},
+				        {"9.1- Vta Neta Promocional (Punto Precio)"},
+				        {"9.2- % Part. Vta Neta Promocional"},
+				        {"9.3- Clientes Promocional"},
+				        {"9.4- % Clientes Promocional"},
+				        {"9.5- Dscto Bruto Promocional"},
+				        {"9.6- Clientes Activos Acumulados al cierre"}
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 55d609fd3c9b46bf91b1ab2f5b6ad226
+
