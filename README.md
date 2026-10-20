@@ -6,9 +6,23 @@ Permite que Claude valide, audite bajo 36 reglas de buenas prácticas, diseñe r
 
 ---
 
-## ⚡ Instalación en 1 Clic para Claude
+## 🚀 Instalación en 1 Línea (Sin clonar el repo)
 
-Cualquier persona que clone o descargue este repositorio puede instalar tanto el servidor MCP como los skills con un solo paso:
+Cualquier persona puede instalar todo el servidor MCP y las Skills ejecutando este comando:
+
+### En Windows (PowerShell):
+```powershell
+irm https://raw.githubusercontent.com/K-834/mcp-cenco/main/setup_claude.py | python -
+```
+
+### En macOS / Linux:
+```bash
+curl -fsSL https://raw.githubusercontent.com/K-834/mcp-cenco/main/setup_claude.py | python3 -
+```
+
+---
+
+## ⚡ Instalación si ya descargaste el repositorio
 
 ### En Windows:
 Haz doble clic en **`install.bat`** o ejecútalo desde tu terminal:

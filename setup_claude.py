@@ -24,8 +24,8 @@ import zipfile
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-# Repositorio oficial en GitHub (reemplazar con tu repo al publicar)
-GITHUB_REPO_URL = "https://github.com/TU_USUARIO/powerbi-mcp-agent"
+# Repositorio oficial en GitHub
+GITHUB_REPO_URL = "https://github.com/K-834/mcp-cenco"
 DEFAULT_INSTALL_DIR = Path.home() / ".powerbi-mcp-agent"
 
 # Skills oficiales de Microsoft a descargar
